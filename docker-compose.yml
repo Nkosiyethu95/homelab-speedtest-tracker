@@ -1,0 +1,20 @@
+# Speedtest Tracker on MbathaHomelab (Ubuntu 24.04)
+# Sanitized example: generate your own APP_KEY and set your own Tailscale IP.
+services:
+  speedtest-tracker:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    container_name: speedtest-tracker
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Africa/Johannesburg
+      - APP_KEY=base64:GENERATE_YOUR_OWN   # echo "base64:$(openssl rand -base64 32)"
+      - APP_URL=http://<tailscale-ip>:8080
+      - DB_CONNECTION=sqlite
+      - SPEEDTEST_SCHEDULE=*/15 * * * *
+      - DISPLAY_TIMEZONE=Africa/Johannesburg
+    volumes:
+      - ./config:/config
